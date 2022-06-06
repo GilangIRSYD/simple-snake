@@ -4,9 +4,6 @@ function main() {
     const snakeBoard = document.getElementById('snakeBoard');
     const ctx = snakeBoard.getContext('2d')
 
-    // //apple
-    // ctx.fillStyle = "red"
-    // ctx.fillRect(0, 0, CELL_SIZE, CELL_SIZE);
 
     let snake = {
         x: 0,
@@ -49,14 +46,7 @@ function main() {
         eat(snake, apple)
         eat(snake2, apple)
 
-        console.log(snake.score)
-        // console.log(snake2.score)
-
-
     }, 100);
-
-    drawScore(snake)
-    drawScore(snake2)
 
     document.addEventListener('keydown', ({ code }) => {
         if (code == 'ArrowUp') {
@@ -120,8 +110,8 @@ function eat(snake, apple) {
         snake.score++
         apple.x = getRandomCoordinate()
         apple.y = getRandomCoordinate()
-        drawScore(snake)
     }
+    drawScore(snake)
 }
 
 function drawScore(snake) {
