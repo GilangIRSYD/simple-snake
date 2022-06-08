@@ -1,86 +1,93 @@
-const CELL_SIZE = 20;
-const BOARD_SIZE = 600;
+const CELL_SIZE = 20
+const BOARD_SIZE = 600
+
 function main() {
-    const snakeBoard = document.getElementById('snakeBoard');
-    const ctx = snakeBoard.getContext('2d')
+    const snkaeBoard = document.getElementById('snakeBoard')
+    const ctx = snkaeBoard.getContext('2d')
 
-
-    let snake = {
+    const snake = {
         x: 0,
         y: 0,
-        score: 0,
-        direction: 'RIGHT',
         color: 'orange',
+        direction: 'RIGHT',
+        score: 0,
         scoreBoard: document.getElementById('score1').getContext('2d')
     }
 
-    let snake2 = {
-        x: 0,
-        y: 0,
-        score: 0,
-        direction: 'DOWN',
+    const snake2 = {
+        x: 400,
+        y: 400,
         color: 'blue',
+        direction: 'LEFT',
+        score: 0,
         scoreBoard: document.getElementById('score2').getContext('2d')
     }
 
-    let apple = {
-        x: getRandomCoordinate(),
-        y: getRandomCoordinate()
+    const apple = {
+        x: 200,
+        y: 200,
+        color: 'red'
     }
 
     setInterval(() => {
         ctx.clearRect(0, 0, BOARD_SIZE, BOARD_SIZE)
+
         //apple
-        ctx.fillStyle = "red"
-        ctx.fillRect(apple.x, apple.y, CELL_SIZE, CELL_SIZE);
+        ctx.fillStyle = apple.color
+        ctx.fillRect(apple.x, apple.y, CELL_SIZE, CELL_SIZE)
 
         //snake
         ctx.fillStyle = snake.color
-        ctx.fillRect(snake.x, snake.y, CELL_SIZE, CELL_SIZE);
+        ctx.fillRect(snake.x, snake.y, CELL_SIZE, CELL_SIZE)
 
+        //snake2
         ctx.fillStyle = snake2.color
-        ctx.fillRect(snake2.x, snake2.y, CELL_SIZE, CELL_SIZE);
+        ctx.fillRect(snake2.x, snake2.y, CELL_SIZE, CELL_SIZE)
+
 
         move(snake)
-        move(snake2)
         eat(snake, apple)
+
+        move(snake2)
         eat(snake2, apple)
+
 
     }, 100);
 
-    document.addEventListener('keydown', ({ code }) => {
-        if (code == 'ArrowUp') {
-            snake.direction = 'UP'
+    document.addEventListener("keydown", ({ code }) => {
+        if (code == 'ArrowDown') {
+            snake.direction = 'DOWN'
+        } else if (code == 'ArrowLeft') {
+            snake.direction = 'LEFT'
         } else if (code == 'ArrowRight') {
             snake.direction = 'RIGHT'
-        } else if (code == 'ArrowDown') {
-            snake.direction = "DOWN"
-        } else if (code == 'ArrowLeft') {
-            snake.direction = "LEFT"
+        } else if (code == 'ArrowUp') {
+            snake.direction = 'UP'
         }
 
-        if (code == 'KeyW') {
-            snake2.direction = 'UP'
+        if (code == 'KeyS') {
+            snake2.direction = 'DOWN'
+        } else if (code == 'KeyA') {
+            snake2.direction = 'LEFT'
         } else if (code == 'KeyD') {
             snake2.direction = 'RIGHT'
-        } else if (code == 'KeyS') {
-            snake2.direction = "DOWN"
-        } else if (code == 'KeyA') {
-            snake2.direction = "LEFT"
+        } else if (code == 'KeyW') {
+            snake2.direction = 'UP'
         }
-    })
 
+        console.log(code)
+    })
 }
 
 function move(snake) {
-    if (snake.direction == 'UP') {
-        snake.y -= CELL_SIZE
+    if (snake.direction == 'DOWN') {
+        snake.y += CELL_SIZE
+    } else if (snake.direction == 'LEFT') {
+        snake.x -= CELL_SIZE
     } else if (snake.direction == 'RIGHT') {
         snake.x += CELL_SIZE
-    } else if (snake.direction == 'DOWN') {
-        snake.y += CELL_SIZE
-    } else {
-        snake.x -= CELL_SIZE
+    } else if (snake.direction == 'UP') {
+        snake.y -= CELL_SIZE
     }
 
     teleport(snake)
@@ -95,33 +102,33 @@ function teleport(snake) {
         snake.y = 0
     }
 
-    if (snake.x < 0) {
-        snake.x = BOARD_SIZE - CELL_SIZE
-    }
-
     if (snake.y < 0) {
         snake.y = BOARD_SIZE - CELL_SIZE
     }
 
+    if (snake.x < 0) {
+        snake.x = BOARD_SIZE - CELL_SIZE
+    }
 }
 
 function eat(snake, apple) {
     if (snake.x == apple.x && snake.y == apple.y) {
         snake.score++
-        apple.x = getRandomCoordinate()
-        apple.y = getRandomCoordinate()
+        apple.x = getRandomCoordiante()
+        apple.y = getRandomCoordiante()
     }
     drawScore(snake)
 }
 
+function getRandomCoordiante() {
+    return ~~(Math.random() * 30) * CELL_SIZE
+}
+
+
 function drawScore(snake) {
-    console.log(snake)
+
     snake.scoreBoard.clearRect(0, 0, BOARD_SIZE, BOARD_SIZE)
     snake.scoreBoard.font = "50px Arial"
     snake.scoreBoard.fillStyle = snake.color
     snake.scoreBoard.fillText(snake.score, 35, 65)
-}
-
-function getRandomCoordinate() {
-    return ~~(Math.random() * 30) * CELL_SIZE
 }
